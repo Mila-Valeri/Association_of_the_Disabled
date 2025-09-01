@@ -1,0 +1,46 @@
+Приклад (Tailwind, фрагмент)
+
+<aside className="w-72 shrink-0 p-4">
+  <Accordion type="multiple" className="space-y-2">
+    <AccordionItem value="about">
+      <AccordionTrigger className="font-bold text-lg">Про Конфедерацію</AccordionTrigger>
+      <AccordionContent>
+        <nav className="mt-2 space-y-1 font-semibold">
+          <a href="/status">Статус</a>
+          <a href="/structure">Структура</a>
+          <a href="/join">Умови вступу</a>
+          <a href="/rights">Права та обов’язки</a>
+          <a href="/tasks">Завдання Конфедерації</a>
+        </nav>
+      </AccordionContent>
+    </AccordionItem>
+
+    <AccordionItem value="law">
+      <AccordionTrigger className="font-extrabold text-lg">Законодавство</AccordionTrigger>
+      <AccordionContent>
+        {/* підпункти за потреби */}
+      </AccordionContent>
+    </AccordionItem>
+    {/* інші розділи */}
+  </Accordion>
+</aside>
+Контентні блоки (наприклад, «Dear friends!»)
+* Залишити нинішній макет карток/градієнтів.
+* Збільшити вагу шрифту: заголовок 700, текст 500.
+* Лінійна довжина рядка: 60–75 символів; max-width: 72ch для абзаців.
+Блок «Partner organizations»
+* Залишити сітку карток, але посилити контраст заголовків (вага 700), додати видимий фокус-стан і aria-label для зовнішніх посилань.
+Доступність
+* lang="uk" у <html>.
+* Семантичні теги: <nav>, <main>, <aside>, <header>, <section>.
+* Арія-атрибути для акордеонів.
+* Клавіатурна навігація (Tab/Shift+Tab/Enter/Space/Arrow).
+* Не вимикаємо масштабування браузера.
+Прийомка (Acceptance Criteria)
+1. На сторінці немає правого контролу «Великий шрифт».
+2. Перемикач теми працює й лишається у хедері.
+3. Заголовок у хедері займає всю ширину, центрований, помітно жирний; логотип збільшений на ~15–20%.
+4. Ліве меню — акордеони; підпункти видно після розкриття; «Законодавство» стилістично виділене.
+5. Уся типографіка стала помітно жирнішою та контрастнішою; мін. розмір 18px у контенті.
+6. Усі інтерфейсні елементи мають видимі фокус-стили; навігація з клавіатури повна.
+7. Мобільна версія: бургер-меню з акордеонами; контент читається без горизонтального скролу.

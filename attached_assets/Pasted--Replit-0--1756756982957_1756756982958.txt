@@ -1,0 +1,249 @@
+Завдання для Replit: «Повна архітектура сторінки + правки по хедеру та футеру»
+0) Цілі
+
+Задокументувати повну архітектуру сторінки (мови, фреймворк, бібліотеки, структура, дизайн-токени: шрифти/розміри/кольори/градієнти/відступи/стани).
+
+Внести правки:
+
+Хедер — центрувати заголовок українською, зробити вигляд сучаснішим (без «чисто чорного», добрати доречний колір/тіні).
+
+Футер — забезпечити читабельність тексту на градієнті (контраст AA+).
+
+Загальна локаль — українська; lang="uk" у <html>.
+
+1) Архітектура проєкту (описати й зафіксувати в docs/architecture.md)
+
+Мови/фреймворк
+
+Frontend: TypeScript + React (через Vite).
+
+Стилі: TailwindCSS (dark-mode через клас dark).
+
+Бібліотеки
+
+Іконки: lucide-react (або Heroicons).
+
+Керування темою: локальне збереження в localStorage (клас dark на <html>).
+
+A11y: @headlessui/react (за потреби для акордеонів).
+
+Структура
+
+src/
+  components/
+    Header.tsx        // хедер з лого, градієнтом, централізованим текстом і ThemeToggle
+    Sidebar.tsx       // акордеони навігації
+    Card.tsx          // узагальнена картка контенту
+    PartnersGrid.tsx  // сітка партнерів
+    Footer.tsx        // футер на градієнті з високим контрастом
+    ThemeToggle.tsx   // компактний свіч
+    Logo.tsx          // емблема CONFEDER (кружок)
+  pages/
+    index.tsx         // головна сторінка
+  styles/
+    globals.css       // Tailwind layers + базові змінні
+  lib/
+    tokens.ts         // дизайн-токени (шрифти, розміри, кольори)
+    a11y.ts           // хелпери доступності
+  i18n/
+    uk.ts             // тексти українською
+docs/
+  architecture.md     // детальна дока (згенерувати в цьому таску)
+
+2) Дизайн-система (tokens) — задати в tokens.ts і Tailwind
+2.1. Шрифти
+
+Primary: Inter (Google Fonts) — ваги: 500, 600, 700, 800, 900.
+
+Fallback: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif.
+
+2.2. Типографічна шкала (px)
+
+H1: 40 (lg: 48), font-extrabold, leading-tight.
+
+H2: 28 (lg: 32), font-bold, leading-snug.
+
+H3: 22–24, font-semibold.
+
+Body: 18 (мінімум), leading-7/8.
+
+Small: 15–16.
+
+Літери не «чорні»: використовувати насичений сірий/темно-синій.
+
+2.3. Кольори (Tailwind extend.colors.brand)
+brand.blue        = #6BB5FF
+brand.indigo      = #6A6FFF
+brand.yellow      = #FFE88A
+brand.darkBlue    = #10305F
+brand.darkIndigo  = #1A2166
+brand.darkYellow  = #7A5B00
+text.light.primary= #0F172A  (≈ slate-900)    // заголовки
+text.light.body   = #1F2937  (≈ slate-800)    // абзаци
+text.dark.primary = #F1F5F9  (≈ slate-100)
+text.dark.body    = #E2E8F0  (≈ slate-200)
+
+2.4. Градієнти (Tailwind extend.backgroundImage)
+header-light: linear-gradient(90deg,#6BB5FF 0%,#6A6FFF 50%,#FFE88A 100%)
+header-dark : linear-gradient(90deg,#10305F 0%,#1A2166 50%,#7A5B00 100%)
+page-light  : linear-gradient(180deg,#F1F7FF 0%,#FAF9F2 100%)
+page-dark   : linear-gradient(180deg,#0B1220 0%,#0F172A 100%)
+footer-light: linear-gradient(90deg,#6BB5FF 0%,#89C7FF 40%,#FFE88A 100%)
+footer-dark : linear-gradient(90deg,#0D2447 0%,#1A2166 40%,#7A5B00 100%)
+
+2.5. Відступи/сітка
+
+Контейнер сторінки: max-w: 1320–1360px, margin: 0 auto, padding: 5–6vw з боків.
+
+Карти: rounded-2xl, shadow-[0_10px_30px_rgba(2,12,27,0.06)], p-6 md:p-8.
+
+2.6. Стани/фокус
+
+Видимий :focus-visible (ring-2 ring-offset-2), ховер-анімації transition-transform shadow.
+
+3) Специфіка по блоках (описати й реалізувати)
+3.1. Хедер
+
+Макет: ліворуч — Logo (кружок CONFEDER, збільшити ~30%), праворуч — заголовковий блок, усе — по центру вертикалі.
+
+Текст (українською, по центру, не по лівому краю):
+
+H1: ВСЕУКРАЇНСЬКА СПІЛКА ГРОМАДСЬКИХ ОРГАНІЗАЦІЙ (H1, 40/48, font-extrabold).
+
+H2: «КОНФЕДЕРАЦІЯ ГРОМАДСЬКИХ ОРГАНІЗАЦІЙ ЛЮДЕЙ З ІНВАЛІДНІСТЮ УКРАЇНИ» (H2, 28/32, font-bold).
+
+Колір тексту: замість «чорного» — text.light.primary (light) / text.dark.primary (dark).
+
+Фон: bg-header-light / bg-header-dark.
+
+Відступи: px-[7vw] py-14.
+
+Тіні/читаємість: дозволений легкий text-shadow або drop-shadow для підсилення контрасту на світлих ділянках градієнта.
+
+ThemeToggle: компактний pill (≈64×30), праворуч угорі; іконки монохромні.
+
+JSX (скорочено)
+
+<header className="relative bg-header-light dark:bg-header-dark px-[7vw] py-14">
+  <div className="absolute right-[2vw] top-5"><ThemeToggle /></div>
+  <div className="mx-auto flex max-w-[1320px] items-center gap-6">
+    <Logo className="h-20 w-20" />
+    <div className="min-w-0 text-center md:text-left md:flex-1">
+      <h1 className="text-[40px] md:text-[48px] font-extrabold leading-tight text-slate-900/95 dark:text-slate-100 drop-shadow-[0_1px_0_rgba(0,0,0,0.1)]">
+        ВСЕУКРАЇНСЬКА СПІЛКА ГРОМАДСЬКИХ ОРГАНІЗАЦІЙ
+      </h1>
+      <p className="mt-2 text-[28px] md:text-[32px] font-bold leading-snug text-slate-900/90 dark:text-slate-100">
+        «КОНФЕДЕРАЦІЯ ГРОМАДСЬКИХ ОРГАНІЗАЦІЙ ЛЮДЕЙ З ІНВАЛІДНІСТЮ УКРАЇНИ»
+      </p>
+    </div>
+  </div>
+</header>
+
+
+ВАЖЛИВО: Вирівняти заголовковий блок по центру хедера (візуально, а не по лівому краю). Якщо логотип зліва «перетягує» композицію, дозволено збільшити внутрішній відступ праворуч або задати md:justify-center.
+
+3.2. Sidebar (акордеони)
+
+Рівень 1 (головні розділи): font-bold, колір text-sky-700 або text-indigo-800 (light) / text-slate-100 (dark).
+
+Рівень 2 (підпункти): font-medium, text-slate-700 (light) / text-slate-300 (dark).
+
+Активний: bg-sky-100 text-sky-900 rounded-lg (dark: bg-sky-900/40 text-sky-100).
+
+Відступи пунктів: px-3 py-2; між групами: mt-3.
+
+Іконка ⚖️ для «Законодавство».
+
+3.3. Контентні картки («Шановні друзі!»…)
+
+max-w-[72ch], rounded-2xl, shadow, p-6 md:p-8.
+
+Текст 18px (мінімум), text.light.body / text.dark.body.
+
+Міжрядковість 1.6.
+
+3.4. Партнери
+
+Grid: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 з gap-6.
+
+Картки з легким підняттям на ховері (-translate-y-0.5) і посиленою тінню.
+
+3.5. Футер
+
+Фон: bg-footer-light / bg-footer-dark.
+
+Проблема з читабельністю (як на скрині): якщо текст «тонe» на світлій ділянці, додати один з варіантів:
+
+backdrop-blur-sm під текстовими блоками; або
+
+напівпрозорий градієнт-оверлей зверху футера (before:absolute before:inset-0 before:bg-gradient-to-t from-black/10 to-transparent); або
+
+затемнена смуга під копірайтом (bg-black/10 dark:bg-black/30 всередині контейнера).
+
+Текст: обов’язково кольори з високим контрастом:
+
+Light: text-slate-800 або text-slate-900 (якщо фон світлий);
+
+Dark: text-slate-100.
+
+Макет: grid md:grid-cols-3 gap-6 items-start.
+
+Наповнення:
+
+Лого + коротка назва.
+
+Контакти (іконки Facebook/Телефон/Email з aria-label).
+
+Копірайт: © 2025 Конфедерація організацій осіб з інвалідністю України. Всі права захищені.
+
+Роздільник: замість тонкої лінії по всій ширині — локальна border-t в контейнері, щоб не «різала» градієнт.
+
+JSX (скорочено)
+
+<footer className="relative bg-footer-light dark:bg-footer-dark mt-16">
+  <div className="mx-auto max-w-[1320px] px-[5.5vw] py-10">
+    <div className="border-t border-slate-800/30 dark:border-white/15 mb-6" />
+    <div className="grid md:grid-cols-3 gap-6 text-slate-900 dark:text-slate-100">
+      {/* 1) Лого + назва */}
+      {/* 2) Контакти з іконками */}
+      {/* 3) Копірайт */}
+    </div>
+  </div>
+</footer>
+
+
+Acceptance по футеру: контраст копірайту не нижче AA (перевірити на ділянках різного тону градієнта). Текст добре читається.
+
+4) Доступність
+
+lang="uk" у <html>.
+
+Повноцінний :focus-visible.
+
+aria-expanded/controls для акордеонів, aria-label для зовнішніх посилань/іконок.
+
+Перевірка контрасту заголовків/тіла/футера — WCAG AA.
+
+5) Що саме потрібно здати (Deliverables)
+
+docs/architecture.md — док з повним описом (стек, бібліотеки, структура, дизайн-токени, таблиці розмірів шрифтів, палітра, градієнти, відступи, стани, правила для кожного блоку).
+
+Оновлені компоненти: Header.tsx, ThemeToggle.tsx, Footer.tsx + правки Sidebar.tsx.
+
+Оновлений tailwind.config.js з extend.colors та extend.backgroundImage.
+
+Працююча локалізація українською (всі підписи/меню/хедер).
+
+Скрипт/логіка збереження теми в localStorage.
+
+6) Acceptance Criteria
+
+Заголовок у хедері — по центру, сучасний колір/тінь, не чорний; лого зліва збільшене.
+
+Футер: текст чітко читається на всіх ділянках градієнта (AA+).
+
+Вся сторінка описана в docs/architecture.md з повними токенами (шрифти/розміри/кольори/градієнти/відступи/стани) і схемою блоків.
+
+Повна українська локалізація.
+
+Доступність: фокуси/aria, контраст AA.
